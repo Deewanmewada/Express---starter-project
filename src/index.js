@@ -1,30 +1,31 @@
 const express = require('express');
 
+const bodyparser = require('body-parser');
+
+
 // const PORT = process.env.PORT; //Environment Port
 
 const ServerConfig = require('./config/serverConfig');
+const connectDB = require('./config/dbConfig');
+
 const app = express();
 
+app.use(bodyparser.json()); //midlware for json
+app.use(bodyparser.text())
+app.use(bodyparser.urlencoded())
 
-app.listen(ServerConfig.PORT , () => {
-    console.log(`Server started at port ${ServerConfig.PORT}...`)
-    // console.log(`Environment Port: ${process.env.PORT}`);
-    
-   
-    
+app.post('/ping', (req,res) => {
+    console.log(req.body)
+    return res.json({message:"pong"}) ;
 })
 
 
-// const express = require('express');
-// const dotenv = require('dotenv');
+app.listen(ServerConfig.PORT , async () => {
+    await connectDB();
+    console.log(`Server started at port ${ServerConfig.PORT}...`)
 
-// dotenv.config(); // Load environment variables from .env file
+    
+   
+    
+});
 
-// const PORT = process.env.PORT || 3000; // Use the PORT from .env or fallback to 3000
-
-// const app = express();
-
-// app.listen(PORT, () => {
-//     console.log(`Server started at port ${PORT}...`);
-//     console.log(`Environment Port: ${process.env.PORT}`);
-// });
